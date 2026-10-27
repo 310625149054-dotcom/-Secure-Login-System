@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Account Registration | AegisAuth CyberSec{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon-badge">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h2>Register Hardened Identity</h2>
+            <p>Credentials will be cryptographically hashed with Argon2id before storage.</p>
+        </div>
+
+        <form action="{{ url_for('register') }}" method="POST" class="auth-form" id="registerForm" novalidate>
+            <!-- CSRF Protection Token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <!-- Username Field -->
+            <div class="form-group">
+                <label for="username" class="form-label">
+                    <i class="fa-solid fa-user"></i> Username
+                </label>
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="e.g. cyber_operator" 
+                        value="{{ username|default('') }}"
+                        autocomplete="username"
+                        required
+                        minlength="3"
+                        maxlength="30"
+                    >
+                </div>
+                <small class="form-hint">3–30 characters: letters, numbers, hyphens, and underscores.</small>
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="email" class="form-label">
+                    <i class="fa-solid fa-envelope"></i> Email Address
+                </label>
+                <div class="input-wrapper">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="name@university.edu" 
+                        value="{{ email|default('') }}"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+                <small class="form-hint">RFC-compliant email. Used for identity verification and notifications.</small>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password" class="form-label">
+                    <i class="fa-solid fa-key"></i> Master Password
+                </label>
+                <div class="input-wrapper password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter secure master password" 
+                        autocomplete="new-password"
+                        required
+                    >
+                    <button type="button" class="password-toggle-btn" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                        <i class="fa-solid fa-eye" id="passwordEyeIcon"></i>
+                    </button>
+                </div>
+
+                <!-- Password Strength Visual Indicator -->
+                <div class="password-strength-container" id="strengthContainer">
+                    <div class="strength-bar-bg">
+                        <div class="strength-bar-fill" id="strengthBar"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Strength: None</div>
+                </div>
+
+                <!-- Real-time Password Requirements Checklist -->
+                <div class="password-requirements" id="passwordRequirements">
+                    <div class="requirement-item" id="req-length">
+                        <i class="fa-solid fa-circle-xmark"></i> At least 8 characters
+                    </div>
+                    <div class="requirement-item" id="req-upper">
+                        <i class="fa-solid fa-circle-xmark"></i> Uppercase letter (A–Z)
+                    </div>
+                    <div class="requirement-item" id="req-lower">
+                        <i class="fa-solid fa-circle-xmark"></i> Lowercase letter (a–z)
+                    </div>
+                    <div class="requirement-item" id="req-number">
+                        <i class="fa-solid fa-circle-xmark"></i> Numerical digit (0–9)
+                    </div>
+                    <div class="requirement-item" id="req-special">
+                        <i class="fa-solid fa-circle-xmark"></i> Special symbol (!@#$%^&*)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="form-group">
+                <label for="confirm_password" class="form-label">
+                    <i class="fa-solid fa-shield-check"></i> Confirm Master Password
+                </label>
+                <div class="input-wrapper password-wrapper">
+                    <input 
+                        type="password" 
+                        id="confirm_password" 
+                        name="confirm_password" 
+                        class="form-input" 
+                        placeholder="Re-enter your master password" 
+                        autocomplete="new-password"
+                        required
+                    >
+                    <button type="button" class="password-toggle-btn" id="toggleConfirmBtn" aria-label="Toggle confirm password visibility">
+                        <i class="fa-solid fa-eye" id="confirmEyeIcon"></i>
+                    </button>
+                </div>
+                <div class="password-match-indicator" id="matchIndicator"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block" id="registerSubmitBtn">
+                    <i class="fa-solid fa-lock"></i> Register Secure Identity
+                </button>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}" class="link-highlight">Sign in here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

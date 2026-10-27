@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Secure Sign In | AegisAuth CyberSec{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon-badge">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h2>Identity Verification</h2>
+            <p>Enter your registered credentials to establish an authenticated session.</p>
+        </div>
+
+        <form action="{{ url_for('login', next=request.args.get('next')) }}" method="POST" class="auth-form" id="loginForm">
+            <!-- CSRF Protection Token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <!-- Identifier (Username or Email) Field -->
+            <div class="form-group">
+                <label for="identifier" class="form-label">
+                    <i class="fa-solid fa-id-card-clip"></i> Username or Email
+                </label>
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        id="identifier" 
+                        name="identifier" 
+                        class="form-input" 
+                        placeholder="Username or registered email address" 
+                        value="{{ identifier|default('') }}"
+                        autocomplete="username"
+                        required
+                        autofocus
+                    >
+                </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password" class="form-label">
+                    <i class="fa-solid fa-key"></i> Password
+                </label>
+                <div class="input-wrapper password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your master password" 
+                        autocomplete="current-password"
+                        required
+                    >
+                    <button type="button" class="password-toggle-btn" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                        <i class="fa-solid fa-eye" id="passwordEyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Security Notice Banner -->
+            <div class="login-security-notice">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Protected by rate limiting &amp; automatic lockout against brute-force attacks.</span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block" id="loginSubmitBtn">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Authenticate &amp; Launch Session
+                </button>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account yet? <a href="{{ url_for('register') }}" class="link-highlight">Register identity here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

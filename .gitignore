@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment secrets
+.env
+
+# Database instances (do not commit production or local testing databases)
+*.db
+*.sqlite3
+instance/
+
+# IDE files
+.vscode/
+.idea/
+*.swp

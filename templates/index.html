@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}AegisAuth | Secure Login & Identity Defense System{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-badge">
+        <span class="pulse-dot"></span> Cybersecurity Capstone Project &bull; Production Security Standards
+    </div>
+    <h1 class="hero-title">
+        Enterprise-Grade <span class="gradient-text">Authentication & Identity Defense</span>
+    </h1>
+    <p class="hero-subtitle">
+        A resilient, hardened web application built with Python Flask, implementing Argon2id memory-hard hashing,
+        Flask-WTF CSRF validation, parameterized SQLite statements, and session fixation safeguards.
+    </p>
+
+    <div class="hero-actions">
+        {% if is_authenticated %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg" id="heroDashboardBtn">
+                <i class="fa-solid fa-gauge-high"></i> Open Protected Dashboard
+            </a>
+            <form action="{{ url_for('logout') }}" method="POST" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-outline-danger btn-lg">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+                </button>
+            </form>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg" id="heroLoginBtn">
+                <i class="fa-solid fa-shield-halved"></i> Access Secure Portal
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-outline btn-lg" id="heroRegisterBtn">
+                <i class="fa-solid fa-user-plus"></i> Create Hardened Account
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Architecture & Defense Matrix Grid -->
+<div class="features-section">
+    <div class="section-header">
+        <h2 class="section-title"><i class="fa-solid fa-microchip"></i> Active Security Controls Architecture</h2>
+        <p class="section-desc">Every layer adheres to OWASP Application Security Verification Standards (ASVS).</p>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-key"></i></div>
+            <div class="feature-badge">Password Hashing</div>
+            <h3>Argon2id Algorithm</h3>
+            <p>Employs the winner of the Password Hashing Competition (PHC). Configured with 64 MB memory cost, 2 iterations, and 1 parallelism thread to resist GPU/ASIC brute-force cracking.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-database"></i></div>
+            <div class="feature-badge">Data Layer</div>
+            <h3>Parameterized Queries</h3>
+            <p>Complete SQL injection mitigation via SQLite prepared statements. User inputs are treated strictly as literals, eliminating SQLi attack vectors.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-fingerprint"></i></div>
+            <div class="feature-badge">Session Guard</div>
+            <h3>Session Fixation Defense</h3>
+            <p>Sessions are completely cleared and regenerated upon authentication. Cookies are bound with <code>HttpOnly</code>, <code>SameSite=Lax</code>, and 30-minute idle lifetimes.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-shield-virus"></i></div>
+            <div class="feature-badge">Transport Guard</div>
+            <h3>Flask-WTF CSRF Defense</h3>
+            <p>Synchronizer token pattern verifies all state-changing POST requests. Cross-site request forgery attacks are caught and rejected with HTTP 400.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-stopwatch"></i></div>
+            <div class="feature-badge">Anti-Brute Force</div>
+            <h3>Rate Limiting & Lockout</h3>
+            <p>Granular rate limiting via Flask-Limiter (8 attempts/min on login) paired with automatic 15-minute account lockout after 5 consecutive failed attempts.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-mask"></i></div>
+            <div class="feature-badge">Enumeration Defense</div>
+            <h3>Timing-Safe Generic Errors</h3>
+            <p>Dummy cryptographic hashes are verified on non-existent accounts to eliminate response-time discrepancies, preventing user account enumeration.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Faculty Demonstration Guide Banner -->
+<div class="demo-card">
+    <div class="demo-badge"><i class="fa-solid fa-graduation-cap"></i> Faculty Demonstration Ready</div>
+    <h3>How to demonstrate this cybersecurity project to evaluators:</h3>
+    <ol class="demo-steps">
+        <li><strong>Registration:</strong> Create an account with strong credentials and observe live client + server validation.</li>
+        <li><strong>Database Inspection:</strong> Confirm passwords in SQLite are irreversibly stored as <code>$argon2id$...</code> hashes.</li>
+        <li><strong>Authentication Flow:</strong> Sign in with username or email; verify session cookies have <code>HttpOnly</code> and <code>SameSite</code>.</li>
+        <li><strong>Protected Dashboard:</strong> Attempt accessing <code>/dashboard</code> in Incognito mode to confirm authentication enforcement.</li>
+        <li><strong>Security Stress Tests:</strong> Run automated Pytest suite testing SQL injection, CSRF tampering, and duplicate account handling.</li>
+    </ol>
+</div>
+{% endblock %}
